@@ -7,10 +7,10 @@ export class OutLoginUtils {
   currentSysId: string = "0"
   sysList: Array<any> = []
 
-  constructor(window: any, urlSuffix: string, currentSysId?:string) {
+  constructor(window: any, urlSuffix: string, currentSysId?: string) {
     this.window = window;
     this.urlSuffix = urlSuffix;
-    if(currentSysId) {
+    if (currentSysId) {
       this.currentSysId = currentSysId;
     }
   }
@@ -19,8 +19,12 @@ export class OutLoginUtils {
     this.sysList = sysList
   }
 
-  setCurrenntSysId(currentSysId:string) {
+  setCurrenntSysId(currentSysId: string) {
     this.currentSysId = currentSysId;
+  }
+
+  sendStartOutLoging(parent: any, currentSysId: string) {
+    parent.postMessage( {msg: 'startOutLogin',currentSysId:2}, '*');
   }
 
   renderIframe(options: any) {
@@ -30,20 +34,21 @@ export class OutLoginUtils {
     let self = this;
     this.window.addEventListener("message", function (event: any) {
       console.log('receiveMessageFromIframePage', event)
-      self.window.document.getElementById("idFrame").contentWindow.postMessage({
-        username, password, currentSysId
-      }, '*')
+      if (event && event.data && event.data.msg === "startOutLogin") {
+        self.window.document.getElementById("idFrame").contentWindow.postMessage({
+          username, password, currentSysId,
+          msg: "doOutlogin"
+        }, '*')
+      }
     }, false);
     for (let item of this.sysList) {
+      console.log("item:", item)
       let div = this.window.document.createElement("div");
       div.innerHTML = '<iframe id="idFrame" name="idFrame" src="http://localhost:8001/cosco-agency-admin/user/outlogin" height = "0" width = "0" frameborder="0" scrolling="auto" style = "display:none;visibility:hidden" ></iframe>';
       this.window.document.body.appendChild(div);
     }
   }
-
-
 }
-
 
 let Plugin = {
   install: function (Vue: any, options: any) {
