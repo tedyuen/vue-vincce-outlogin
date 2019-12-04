@@ -42,9 +42,9 @@ export class OutLoginUtils {
       }
     }, false);
     for (let item of this.sysList) {
-      console.log("item:", item)
+      console.log("vincce item:", item)
       let div = this.window.document.createElement("div");
-      div.innerHTML = '<iframe id="idFrame" name="idFrame" src="http://localhost:8001/cosco-agency-admin/user/outlogin" height = "0" width = "0" frameborder="0" scrolling="auto" style = "display:none;visibility:hidden" ></iframe>';
+      div.innerHTML = `<iframe id="idFrame" name="idFrame" src="${item.url}" height = "0" width = "0" frameborder="0" scrolling="auto" style = "display:none;visibility:hidden" ></iframe>`;
       this.window.document.body.appendChild(div);
     }
   }
