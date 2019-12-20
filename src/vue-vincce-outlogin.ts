@@ -35,7 +35,7 @@ export class OutLoginUtils {
     this.window.addEventListener("message", function (event: any) {
       // console.log('receiveMessageFromIframePage', event)
       if (event && event.data && event.data.msg === "startOutLogin") {
-        self.window.document.getElementById("idFrame").contentWindow.postMessage({
+        self.window.document.getElementById(`frame-${event.data.currentSysId}`).contentWindow.postMessage({
           username, password, currentSysId,
           msg: "doOutlogin"
         }, '*')
@@ -44,7 +44,7 @@ export class OutLoginUtils {
     for (let item of this.sysList) {
       // console.log("vincce item:", item)
       let div = this.window.document.createElement("div");
-      div.innerHTML = `<iframe id="idFrame" name="idFrame" src="${item.url}" height = "0" width = "0" frameborder="0" scrolling="auto" style = "display:none;visibility:hidden" ></iframe>`;
+      div.innerHTML = `<iframe id="frame-${item.id}" name="frame-${item.id}" src="${item.url}" height = "0" width = "0" frameborder="0" scrolling="auto" style = "display:none;visibility:hidden" ></iframe>`;
       this.window.document.body.appendChild(div);
     }
   }
